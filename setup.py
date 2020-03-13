@@ -6,7 +6,7 @@ with open("README.md") as f:
 with open("reqs/base-requirements.txt") as f:
     REQUIREMENTS = f.read().splitlines()
 
-NAME = "comuttest"
+NAME = "comut"
 AUTHOR_NAME, AUTHOR_EMAIL = "Jett Crowdis", "jcrowdis@broadinstitute.org"
 CLASSIFIERS = [
     "Development Status :: 4 - Beta",
@@ -19,13 +19,13 @@ CLASSIFIERS = [
     "Topic :: Scientific/Engineering :: Bio-Informatics",
 ]
 LICENSE = "MIT"
-DESCRIPTION = "Python library for visualizing genomic information with comutation plots"
+DESCRIPTION = "A Python library for creating comutation plots to visualize genomic information"
 URL = "https://github.com/vanallenlab/comut/tree/package"
 PYTHON_REQ = ">=3.7"
 
 setuptools.setup(
     name=NAME,
-    version="0.0.5",
+    version="0.0.1",
     author=AUTHOR_NAME,
     author_email=AUTHOR_EMAIL,
     description=DESCRIPTION,

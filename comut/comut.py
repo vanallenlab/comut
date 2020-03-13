@@ -145,31 +145,20 @@ class CoMut:
 
         Params:
         -------
-        data: pandas dataframe, shape (n categories, m)
-            Input alteration dataframe with required columns
-            (sample, category, value).
+        data: pandas dataframe
+            Dataframe from add_categorical_data or add_continuous_data
 
         category_order: list-like
-            Order of category to plot, from top to bottom. Can be a subset of
-            categories in data.
+            category_order from add_categorical_data
 
         sample_order: list-like
             Order of samples, from left to right.
 
         value_order: list-like:
-            Order of plotting of values in a single patch, from left
-            triangle to right triangle. For example, if Amp and Del
-            should always be the upper left triangle when the other alteration is
-            a Missense, value_order would be ['Amp', 'Del, 'Missense'].
+            value_order from add_categorical_data
 
         priority: list-like
-            Ordered list of priorities for parsing. The function will attempt
-            to preserve values in this list, subverting the "Multiple"
-            assignment for more than 2 values.
-
-            If a sample has 3 values, two of which are priorities,
-            the two priorities will be plotted and the 3rd alteration will
-            be ignored.
+            priority from add_categorical_data
 
         Returns:
         --------
@@ -263,8 +252,6 @@ class CoMut:
 
         name: str
             The name of the dataset being added. Used to references axes.
-            defaults to the integer index of the plot being added. This also
-            determines legend titles.
 
             Example:
             --------
@@ -272,25 +259,31 @@ class CoMut:
             example_comut.add_categorical_data(data, name = 'Mutation type')
 
         category_order: list-like
-            The order of categories (from top to bottom) plotted in the CoMut.
-            Categories not in this list not be plotted. Categories present in
-            this list but not in the data will be plotted, with the value
-            'Absent' assigned to all samples. Defaults to all unique categories
-            present in data in the order they appear in the data.
+            Order of category to plot, from top to bottom. Only these
+            categories are plotted.
+
+            Example:
+            --------
+            example_comut = comut.CoMut()
+            example_comut.add_categorical_data(data, category_order = ['TP53', 'BRAF'])
 
         value_order: list-like
-            Order values are plotted in a single patch, from left
-            triangle to right triangle. For example, if Amp and Del
-            should always be the upper left triangle when the other alteration
-            is a Missense, value_order would be ['Amp', 'Del, 'Missense'].
-            Defaults to alphabetical ordering.
+            Order of plotting of values in a single patch, from left
+            triangle to right triangle.
+
+            Example:
+            --------
+            value_order = ['Amp', 'Missense']
+
+            If Amp and Missense exist in the same category and sample, Amp
+            will be drawn as left triangle, Missense as right.
 
         mapping: dict
             Mapping of values to patch properties. The dict can either specify
             only the facecolor or other patches properties.
 
             Note:
-            ----
+            -----
             Three additional values are required to fully specify mapping:
 
             'Absent', which determines the color for samples without value
@@ -299,31 +292,28 @@ class CoMut:
             'Multiple', which determines the color for samples with more than
             two values in that category (default brown).
 
-            'Not Available', which determines the patch properties when data is
-            unavailable.
+            'Not Available', which determines the patch properties when a sample's
+            value is 'Not Available'.
 
         borders: list-like
-            List of categories that should be plotted as borders, not patches.
-            Facecolor for these categories must be 'none' in the mapping dict,
-            with edgecolor as the desired color. For example, if loss of
-            heterozygosity (LOH) is desired as a black border:
+            List of values that should be plotted as borders, not patches.
 
-            borders = ['LOH']
-            mapping = {'Missense': 'orange', 'Missense': 'pink',
-                       'LOH': {'facecolor':'none', 'edgecolor': 'black'}}
-
-            Border edge color is black in the default mapping. Linewidth
-            can also be specified.
+            Example:
+            --------
+            example_comut = comut.CoMut()
+            example_comut.add_categorical_data(data, borders = ['LOH'])
 
         priority: list-like
-            List of categories that should be given priority during plotting.
-            This avoids the use of 'Multiple' for these categories.
+            Ordered list of priorities for values. The function will attempt
+            to preserve values in this list, subverting the "Multiple"
+            assignment.
 
-            For example, if amplifications should always be shown
-            even if there are multiple other values, one might use
-            priority = ['Amplification']. This would cause samples with two
-            mutations and an amplification in the same gene to show
-            a brown triangle and a red triangle, rather than a brown square.
+            Example:
+            --------
+            example_comut.add_categorical_data(data, priority = ['Amp'])
+
+            If Amp exists alongside two other values, it will be drawn as
+            Amp + Multiple (two triangles), instead of Multiple.
 
         tick_style: str, default='normal', 'italic', 'oblique'
             Tick style to be used for the y axis ticks (category names).
@@ -442,13 +432,13 @@ class CoMut:
             Currently, only one category is allowed.
 
         mapping: str, colors.LinearSegmentedColormap, default 'binary'
-               A mapping of continuous value to color. Can be defined as
-               matplotlib colormap (str) or a custom LinearSegmentedColormap
-               Samples with missing information are colored white.
+            A mapping of continuous value to color. Can be defined as
+            matplotlib colormap (str) or a custom LinearSegmentedColormap
+            Samples with missing information are colored according to 'Absent'.
 
         value_range: tuple or list
-               min and max value of the data. Data will be normalized using
-               this range to fit (0, 1). Defaults to the range of the data.
+            min and max value of the data. Data will be normalized using
+            this range to fit (0, 1). Defaults to the range of the data.
 
         cat_mapping: dict
             Mapping from a discrete category to patch color. Primarily used
@@ -543,7 +533,7 @@ class CoMut:
 
         # store plot data
         plot_data = {'data': parsed_data, 'patches_options': dict_mapping, 'tick_style': tick_style,
-                     'type': 'continuous'}
+                     'type': 'continuous', 'range': value_range, 'colorbar': mapping}
 
         self._plots[name] = plot_data
         return None
@@ -557,12 +547,10 @@ class CoMut:
         data: pandas dataframe
             Dataframe containing data for samples. The first column must be
             sample, and other columns should be values for the bar plot.
-            Missing samples will be given a value of 0.
 
         name: str
-            The name of the dataset being added. Used to references axes and
-            create legend title in unified legend. Defaults to the integer
-            index of the plot being added.
+            The name of the dataset being added. Used to references axes.
+            Defaults to the integer index of the plot being added.
 
         stacked: bool, default=False
             Whether the bar graph should be stacked.
@@ -575,7 +563,7 @@ class CoMut:
             The label for the y axis.
 
         bar_kwargs: dict
-            kwargs to be passed to plt.bar during the process of plotting.
+            dict of kwargs to be passed to plt.bar
 
         Returns:
         --------
@@ -634,8 +622,7 @@ class CoMut:
 
         name: str
             The name of the dataset being added. Used to references axes
-            and create legend title. Defaults to the integer index of the plot
-            being added.
+            Defaults to the integer index of the plot being added.
 
         plot_kwargs: dict
             dict of kwargs to be passed to plt.plot during plotting. Defaults
@@ -702,53 +689,25 @@ class CoMut:
             Axis object on which to draw the graph.
 
         data: pandas dataframe
-            Parsed dataframe containing categorical data, with categories
-            as rows and samples as columns.
+            Parsed dataframe from _parse_categorical_data
 
         name: str
             Name of the plot to store in axes dictionary.
 
         mapping: dict
-            Mapping of value to patch properties. The dict can
-            either specify only the facecolor or other patches properties.
-            Example shown below.
-
-            mapping = {'Missense': 'orange',
-                       'Nonsense': {'facecolor': 'pink', 'alpha': 0.5}}
-
-            Defaults to the vivid color map from palettable.
-
-            Note:
-            ----
-            Two keys in mapping are required to fully specify mapping:
-
-            'Absent', which determines the color for samples without a value
-            in that category (default white)
-
-            'Multiple', which determines the color for samples with more than
-            two values in that category (default brown).
+            mapping from add_categorical_data
 
         borders: list-like
-            List of categories that should be plotted as borders, not patches.
-            Facecolor for these categories must be 'none' in the mapping dict,
-            with edgecolor as the desired color. For example, if loss of
-            heterozygosity (LOH) is desired as a border color:
-
-            borders = ['LOH']
-            mapping = {'Missense': 'orange', 'Missense': 'pink',
-                       'LOH': {'facecolor':'none', 'edgecolor': 'black'}}
+            borders from add_categorical_data
 
         x_padding: float, default=0
-            The padding between patches in the x-direction in the categorical
-            plot.
+            x_padding from plot_comut
 
         y_padding: float, default=0
-            The padding between patches in the y-direction in the categorical
-            plot.
+            y_padding from plot_comut
 
         tri_padding: float, default=0
-            If there are two values for a sample in a category, the spacing
-            between the triangles that represent each alteration.
+            tri_padding from plot_comut
 
         tick_style: str, default='normal', 'italic', 'oblique'
             Tick style to be used for the y axis ticks (category names).
@@ -899,25 +858,22 @@ class CoMut:
             axis object on which to draw the graph.
 
         data: pandas Dataframe
-            Dataframe containing bar plot data, with sample as index
-            and data as columns.
+            Dataframe from add_bar_data
 
         name: str
-            The name of the dataset being added. Used to references axes.
-            defaults to the integer index of the plot being added.
+            name from add_bar_data
 
         mapping: dict
-            A mapping of column to color. Dictionary should map column name
-            to color (str) or to plot kwargs.
+            mapping from add_bar_data
 
         stacked: bool
-            Whether the bar graph should be stacked.
+            stacked from add_bar_data
 
         ylabel: str
-            The label for the y axis
+            ylabel from add_bar_data
 
         bar_kwargs: dict
-            kwargs to be passed to plt.bar during the process of plotting.
+            bar_kwargs from add_bar_data
 
         Returns:
         -------
@@ -973,8 +929,9 @@ class CoMut:
         Params:
         -----------
         data: pandas dataframe
-            Dataframe containing data for categories in paired plot. Index
-            should be categories, and columns should be bar values.
+            Dataframe containing data for categories in paired plot. The first
+            column must be category, and other columns should be values for the
+            bar plot.
 
         paired_name: str or int
             Name of plot on which the bar plot will be placed. Must reference
@@ -989,14 +946,11 @@ class CoMut:
             plot).
 
         stacked: bool, default=False
-            Whether the bar graph should be stacked. Stacked bar graphs will
-            stack by column, with the the first column being the bottom-most
-            part of the stack.
+            Whether the bar graph should be stacked.
 
         mapping: dict
             A mapping of column to color. Dictionary should map column name
-            to color (str) or to plot kwargs. By default, Vivid 10 is
-            used.
+            to color (str) or to plot kwargs.
 
         xlabel: str, default ''
             The label for the x axis
@@ -1071,17 +1025,13 @@ class CoMut:
             axis object on which to draw the graph.
 
         data: pandas dataframe
-            A dataframe that assigns individual samples to groups. Index
-            is samples, with required column group that assigns samples
-            to groups.
+            data from add_sample_indicators
 
         name: str
-            The name of the dataset being added. Used to references axes.
-            defaults to the integer index of the plot being added.
+            name from add_sample_indicators
 
         plot_kwargs: dict
-            dict of kwargs to be passed to plt.plot during plotting, eg
-            {'color': 'black', 'markersize': 5}
+            plot_kwargs from add_sample_indicators
 
         Returns:
         --------
@@ -1125,35 +1075,28 @@ class CoMut:
             axis object on which to draw the graph.
 
         data: pandas Dataframe
-            Dataframe containing sidebar plot data, with categories as index and
-            bar categories as columns
+            data from add_side_bar_data
 
         name: str
-            The name of the dataset being added. Used to references axes.
-            defaults to the integer index of the plot being added.
+            name from add_side_bar_data
 
         mapping: dict
-            A mapping of column to color. Dictionary should map column name
-            to color (str) or to plot kwargs. By default, Vivid 10 is
-            used.
+            mapping from add_side_bar_data
 
         position: str, left or right
-            Denotes where the side bar data is placed, to the left or right of CoMut.
+            position from add_side_bar_data
 
         stacked: bool
-            Whether the bar graph should be stacked. Stacked bar graphs will
-            stack by column, with the the first column being the bottom-most
-            part of the stack.
+            stacked from add_side_bar_data
 
         xlabel: str
-            The label for the x axis
+            xlabel from add_side_bar_data
 
         y_padding: float
-            Distance between y patches in the paired CoMut. Used to set heights if
-            not in bar_kwargs.
+            y_padding from plot_comut
 
         bar_kwargs: dict
-            kwargs to be passed to plt.barh during the process of plotting.
+            bar_kwargs from add_side_bar_data
 
         Returns:
         -------
@@ -1303,7 +1246,7 @@ class CoMut:
         Params:
         -------
         name: str or int
-            Name of the plot (only used if data is categorical).
+            Name of the plot.
 
         plot_type: str
             Type of plot, used to set default height.
@@ -1415,15 +1358,14 @@ class CoMut:
 
         x_padding, y_padding: float, optional (default 0)
             The space between patches in the CoMut plot in the x and y
-            direction. Ranges from 0 - 0.5.
+            direction.
 
         tri_padding: float
             If there are two values for a sample in a category, the spacing
             between the triangles that represent each value.
 
         heights: dict
-            The relative heights of all the plots. Useful for enlarging
-            plot types within the CoMut plot. Dict should have keys as
+            The relative heights of all the plots. Dict should have keys as
             plot names and values as relative height.
 
             Height values for each plot type default to the following:
@@ -1431,9 +1373,6 @@ class CoMut:
                 1 for continuous data
                 3 for bar plots
                 1 for sample indicator
-
-            By default, subplots are assigned a height equal to the sum of
-            heights making up that subplot.
 
             Example:
             --------
@@ -1448,19 +1387,19 @@ class CoMut:
             if side bar plots are added. Defaults to 5 for the central CoMut
             and 1 for each side plot.
 
+            Example:
+            --------
+            widths = [0.5, 5]
+            CoMut.plot_comut(widths=heights)
+
         wspace: float, default 0.2
             The distance between different plots in the x-direction
             (ie side bar plots)
 
         structure: list-like
             List containing desired CoMut structure. Must be provided
-            as list of lists (see example). Can be used to alter CoMut order,
-            plot a subset of plots, or collapse plots into one subplot
-            (allowing for different spacing than overall CoMut). Single plots
-            must be provided their own one element list.
-
-            By default, all data is plotted onto the CoMut in the order
-            the data was added, with no subplots.
+            as list of lists (see example). Default structure is to place
+            each plot in its own list.
 
             Example:
             --------
@@ -1574,8 +1513,8 @@ class CoMut:
 
                     # sideplots are paired with central CoMut plot
                     side_ax = fig.add_subplot(spec[num_subplots - i - 1, sideplot_idx])
-                    side_ax = self._plot_side_bar_data(side_ax, side_name, y_padding = y_padding,
-                                                      **side_plot)
+                    side_ax = self._plot_side_bar_data(side_ax, side_name, y_padding=y_padding,
+                                                       **side_plot)
 
                     # force side axis to match paired axis. Avoiding sharey in case
                     # side bar needs different ticklabels
@@ -1586,7 +1525,7 @@ class CoMut:
                 num_plots = len(plot)
 
                 # reverse the heights to be bottom up
-                height = height [::-1]
+                height = height[::-1]
                 subplot_spec = gridspec.GridSpecFromSubplotSpec(ncols=1, nrows=num_plots,
                                                                 hspace=subplot_hspace, subplot_spec=spec[num_subplots - i - 1, comut_idx],
                                                                 height_ratios=height)
@@ -1631,9 +1570,7 @@ class CoMut:
 
         order: list-like
             Order of values in the legend. By default, values are
-            sorted alphabetically. If a subset of values are provided,
-            the values in order will be given and the rest sorted
-            alphabetically.
+            sorted alphabetically.
 
         ignored_values: list-list
             List of values ignored by the legend. Defaults to
@@ -1671,6 +1608,13 @@ class CoMut:
         if ignored_values is None:
             ignored_values = ['Not Available', 'Absent']
 
+        # define the axis
+        axis = self.axes[name]
+
+        plot_type = self._plots[name]['type']
+        if plot_type == 'continuous':
+            raise ValueError('add_axis_legend is not valid for continuous data.')
+
         # extract current handles and labels on axis
         handles, labels = self.axes[name].get_legend_handles_labels()
         handle_lookup = dict(zip(labels, handles))
@@ -1695,8 +1639,8 @@ class CoMut:
         sorted_handles = [handle_lookup[label] for label in sorted_labels]
 
         # create legend
-        legend = self.axes[name].legend(sorted_handles, sorted_labels, bbox_to_anchor=bbox_to_anchor,
-                                        frameon=frameon, **legend_kwargs)
+        legend = axis.legend(sorted_handles, sorted_labels, bbox_to_anchor=bbox_to_anchor,
+                             frameon=frameon, **legend_kwargs)
 
         # align legend title
         legend._legend_box.align = title_align
@@ -1717,12 +1661,8 @@ class CoMut:
             when data is added.
 
         border_white: list-like
-            List of categories to border for legend entry. Can be useful
-            when the CoMut patch should be white but the legend should be a
-            white box bordered in black.
-
-            Note that this will replace whatever patch currently exists with a
-            white box bordered in black.
+            List of categories to border for legend entry. This will replace whatever
+            patch currently exists with a white box bordered in black.
 
         headers: bool, default True
             Whether the legend should include subtitles. Subtitles are left
@@ -1730,10 +1670,8 @@ class CoMut:
 
         rename: dict
             A dictionary for renaming categories. The key should be the
-            original category name, with value as the new category name. This
-            renaming will apply globally, to all the categories in the legend.
-
-            Note that renaming occurs before adding border white patches.
+            original category name, with value as the new category name.
+            Renaming occurs after adding border white patches.
 
         bbox_to_anchor: BboxBase, 2-tuple, or 4-tuple of floats, default (1,1)
             The location of the legend relative to the axis.
@@ -1794,7 +1732,7 @@ class CoMut:
                 for patch_name in border_white:
                     if patch_name in handle_lookup:
                         handle_lookup[patch_name] = patches.Patch(facecolor='white', edgecolor='black',
-                                                          label=patch_name)
+                                                                  label=patch_name)
 
                 # add legend subheader for nonindicator data
                 if plot_type != 'indicator' and headers:
