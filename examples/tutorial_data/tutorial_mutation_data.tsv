@@ -1,34 +1,34 @@
 sample	category	value
 Sample2	BRCA2	Splice site
-Sample2	NRAS	Frameshift
+Sample2	NRAS	Frameshift indel
 Sample2	NRAS	Nonsense
-Sample4	RB1	Frameshift
+Sample4	RB1	Frameshift indel
 Sample4	RB1	Missense
 Sample4	BRCA2	Splice site
 Sample4	NRAS	Splice site
-Sample5	TP53	Frameshift
+Sample5	TP53	Frameshift indel
 Sample5	TP53	Missense
 Sample5	BRAF	In frame indel
 Sample5	MYC	Nonsense
-Sample5	BRCA2	Frameshift
+Sample5	BRCA2	Frameshift indel
 Sample5	HER2	Splice site
-Sample5	PTEN	Frameshift
-Sample5	PTEN	Frameshift
+Sample5	PTEN	Frameshift indel
+Sample5	PTEN	Frameshift indel
 Sample6	TP53	Splice site
-Sample6	TP53	Frameshift
+Sample6	TP53	Frameshift indel
 Sample6	BRAF	Splice site
 Sample6	KRAS	In frame indel
 Sample6	PTEN	In frame indel
 Sample7	BRAF	Nonsense
 Sample7	HER2	In frame indel
-Sample7	HER2	Frameshift
+Sample7	HER2	Frameshift indel
 Sample8	MYC	Splice site
-Sample8	YAP	Frameshift
+Sample8	YAP	Frameshift indel
 Sample9	MYC	Splice site
 Sample9	KRAS	Nonsense
 Sample9	KRAS	Splice site
 Sample9	RB1	Missense
-Sample9	BRCA2	Frameshift
+Sample9	BRCA2	Frameshift indel
 Sample11	MYC	In frame indel
 Sample11	NRAS	Nonsense
 Sample12	BRAF	Missense
@@ -39,26 +39,26 @@ Sample14	NRAS	Nonsense
 Sample14	NRAS	Splice site
 Sample14	YAP	In frame indel
 Sample15	TP53	Splice site
-Sample15	RB1	Frameshift
+Sample15	RB1	Frameshift indel
 Sample15	HER2	In frame indel
-Sample15	PTEN	Frameshift
+Sample15	PTEN	Frameshift indel
 Sample16	BRAF	Missense
 Sample16	ATM	Nonsense
 Sample16	NRAS	Nonsense
 Sample17	BRCA2	Splice site
-Sample17	ATM	Frameshift
+Sample17	ATM	Frameshift indel
 Sample18	MYC	Missense
 Sample18	RB1	Splice site
-Sample19	TP53	Frameshift
+Sample19	TP53	Frameshift indel
 Sample19	MYC	Splice site
-Sample19	RB1	Frameshift
+Sample19	RB1	Frameshift indel
 Sample19	RB1	In frame indel
 Sample20	ATM	Splice site
-Sample20	ATM	Frameshift
+Sample20	ATM	Frameshift indel
 Sample21	RB1	Splice site
 Sample22	BRAF	In frame indel
 Sample22	BRCA2	Missense
-Sample22	BRCA2	Frameshift
+Sample22	BRCA2	Frameshift indel
 Sample22	HER2	In frame indel
 Sample22	HER2	Nonsense
 Sample23	BRAF	Splice site
@@ -66,13 +66,13 @@ Sample23	PTEN	In frame indel
 Sample24	BRAF	Missense
 Sample24	BRCA2	Splice site
 Sample24	HER2	Nonsense
-Sample24	NRAS	Frameshift
+Sample24	NRAS	Frameshift indel
 Sample25	TP53	Missense
-Sample25	TP53	Frameshift
+Sample25	TP53	Frameshift indel
 Sample25	RB1	Splice site
-Sample25	HER2	Frameshift
+Sample25	HER2	Frameshift indel
 Sample26	BRCA2	Missense
-Sample26	ATM	Frameshift
+Sample26	ATM	Frameshift indel
 Sample27	BRCA2	Splice site
 Sample27	NRAS	Splice site
 Sample28	KRAS	Splice site
@@ -80,7 +80,7 @@ Sample28	YAP	In frame indel
 Sample29	KRAS	Nonsense
 Sample29	NRAS	In frame indel
 Sample29	PTEN	Missense
-Sample30	BRAF	Frameshift
+Sample30	BRAF	Frameshift indel
 Sample30	BRAF	Splice site
 Sample30	BRCA2	Missense
 Sample31	TP53	Nonsense
@@ -88,21 +88,21 @@ Sample31	BRAF	In frame indel
 Sample31	YAP	Splice site
 Sample32	TP53	Splice site
 Sample32	BRAF	In frame indel
-Sample32	BRAF	Frameshift
+Sample32	BRAF	Frameshift indel
 Sample32	BRAF	Missense
 Sample32	HER2	Splice site
 Sample33	TP53	Nonsense
 Sample33	TP53	Missense
-Sample33	RB1	Frameshift
+Sample33	RB1	Frameshift indel
 Sample33	BRCA2	Nonsense
-Sample33	BRCA2	Frameshift
-Sample33	BRCA2	Frameshift
+Sample33	BRCA2	Frameshift indel
+Sample33	BRCA2	Frameshift indel
 Sample33	HER2	In frame indel
 Sample33	PTEN	In frame indel
 Sample33	PTEN	Nonsense
-Sample35	MYC	Frameshift
-Sample35	MYC	Frameshift
-Sample35	HER2	Frameshift
+Sample35	MYC	Frameshift indel
+Sample35	MYC	Frameshift indel
+Sample35	HER2	Frameshift indel
 Sample36	TP53	In frame indel
 Sample36	BRAF	Splice site
 Sample36	BRAF	Nonsense
@@ -111,33 +111,33 @@ Sample36	ATM	Splice site
 Sample36	PTEN	Splice site
 Sample36	YAP	Missense
 Sample36	YAP	Splice site
-Sample36	YAP	Frameshift
+Sample36	YAP	Frameshift indel
 Sample37	ATM	Missense
-Sample37	PTEN	Frameshift
+Sample37	PTEN	Frameshift indel
 Sample38	KRAS	Splice site
 Sample38	ATM	Nonsense
-Sample38	NRAS	Frameshift
+Sample38	NRAS	Frameshift indel
 Sample39	YAP	In frame indel
 Sample39	YAP	Splice site
 Sample40	YAP	Missense
-Sample41	TP53	Frameshift
+Sample41	TP53	Frameshift indel
 Sample41	NRAS	In frame indel
 Sample42	BRAF	Splice site
 Sample42	NRAS	Nonsense
 Sample42	YAP	Splice site
-Sample43	BRAF	Frameshift
+Sample43	BRAF	Frameshift indel
 Sample43	PTEN	Missense
 Sample44	HER2	Nonsense
 Sample44	HER2	In frame indel
-Sample44	HER2	Frameshift
+Sample44	HER2	Frameshift indel
 Sample45	KRAS	In frame indel
 Sample45	RB1	Splice site
 Sample45	RB1	Splice site
 Sample45	PTEN	Splice site
-Sample45	PTEN	Frameshift
+Sample45	PTEN	Frameshift indel
 Sample45	YAP	Missense
-Sample45	YAP	Frameshift
-Sample45	YAP	Frameshift
+Sample45	YAP	Frameshift indel
+Sample45	YAP	Frameshift indel
 Sample46	TP53	Splice site
 Sample47	TP53	Nonsense
 Sample47	BRAF	Nonsense

@@ -31,11 +31,11 @@ class CoMut:
     figure: matplotlib figure object
         Figure that the CoMut is plotted on
 
-    plots: dict
+    _plots: dict
         Container for plot information, including data, visual
         params (ie color maps), plot type, and plot name.
 
-    side_plots: dict of dicts
+    _side_plots: dict of dicts
         Container for side plot information. Values are side plot
         data, keys are the name of the central CoMut plot the side
         plot is paired with.'''
@@ -48,15 +48,14 @@ class CoMut:
         self.figure = None
 
         # attributes for manipulation and storage
-        self.plots = {}
-        self.side_plots = defaultdict(dict)
+        self._plots = {}
+        self._side_plots = defaultdict(dict)
 
-    # helper function, doesn't actually rely on self
-    def get_default_categorical_cmap(self, n_cats):
+    @classmethod
+    def _get_default_categorical_cmap(cls, n_cats):
         '''Returns the default color map for n categories.
-        If 10 or fewer, uses vivid_10 from palettable. If more than
-        10 but fewer than 20, uses tab20. If more than 20, uses a segmented
-        rainbow colormap.
+        If 10 or fewer, uses vivid_10 from palettable. If more than 10,
+        uses a segmented rainbow colormap.
 
         Params:
         -------
@@ -69,17 +68,14 @@ class CoMut:
 
         if n_cats <= 10:
             cmap = palettable.cartocolors.qualitative.Vivid_10.mpl_colors
-        elif n_cats <= 20:
-            tab20_cmap = plt.get_cmap('tab20')
-            cmap = [tab20_cmap(i) for i in range(n_cats)]
         else:
             hsv_cmap = plt.get_cmap('hsv')
             cmap = [hsv_cmap(i/n_cats) for i in range(n_cats)]
 
         return cmap
 
-    # helper function, doesn't actually rely on self
-    def get_triangles(self, x_base, y_base, tri_padding, height, width):
+    @classmethod
+    def _get_triangles(cls, x_base, y_base, tri_padding, height, width):
         '''Returns np arrays of triangle coordinates
 
         Params:
@@ -108,8 +104,8 @@ class CoMut:
 
         return (np.array(tri_1_coords), np.array(tri_2_coords))
 
-    # helper function, doesn't actually rely on self
-    def sort_list_by_list(self, value_list, value_order):
+    @classmethod
+    def _sort_list_by_list(cls, value_list, value_order):
         '''Sort an value list by a specified value
         order, otherwise sort alphabetically at end.
 
@@ -141,9 +137,9 @@ class CoMut:
         sorted_values = sorted_subset + sorted_other
         return sorted_values
 
-    # helper function, doesn't actually rely on self
-    def parse_categorical_data(self, data, category_order, sample_order, value_order,
-                               priority):
+    @classmethod
+    def _parse_categorical_data(cls, data, category_order, sample_order,
+                                value_order, priority):
         '''Parses tidy dataframe into a gene x sample dataframe
         of tuples for plotting
 
@@ -206,13 +202,13 @@ class CoMut:
                 # if length 2, sort by value order then convert to tuple
                 elif len(sample_category_data) == 2:
                     values = sample_category_data['value'].values
-                    sorted_values = self.sort_list_by_list(values, value_order)
+                    sorted_values = cls._sort_list_by_list(values, value_order)
                     parsed_data.loc[category, sample] = tuple(sorted_values)
 
                 # if more than two, apply priority, sort, then convert to tuple.
                 else:
                     values = sample_category_data['value'].values
-                    present_priorities = [value for value in values if value in priority]
+                    present_priorities = [v for v in values if v in priority]
 
                     # just put 'Multiple' if no priorities or more than two
                     if len(present_priorities) == 0 or len(present_priorities) > 2:
@@ -221,17 +217,17 @@ class CoMut:
                     # always plot a priority if present
                     elif len(present_priorities) == 1:
                         df_entry = present_priorities + ['Multiple']
-                        sorted_df_entry = self.sort_list_by_list(df_entry, value_order)
+                        sorted_df_entry = cls._sort_list_by_list(df_entry, value_order)
                         parsed_data.loc[category, sample] = tuple(sorted_df_entry)
 
                     # plot two priorities if present, ignoring others
                     elif len(present_priorities) == 2:
-                        df_entry = self.sort_list_by_list(present_priorities, value_order)
+                        df_entry = cls._sort_list_by_list(present_priorities, value_order)
                         parsed_data.loc[category, sample] = tuple(df_entry)
 
         return parsed_data
 
-    def check_samples(self, samples):
+    def _check_samples(self, samples):
         '''Checks that samples are a subset of samples
         currently associated with the CoMut object.
 
@@ -270,6 +266,11 @@ class CoMut:
             defaults to the integer index of the plot being added. This also
             determines legend titles.
 
+            Example:
+            --------
+            example_comut = comut.CoMut()
+            example_comut.add_categorical_data(data, name = 'Mutation type')
+
         category_order: list-like
             The order of categories (from top to bottom) plotted in the CoMut.
             Categories not in this list not be plotted. Categories present in
@@ -286,17 +287,11 @@ class CoMut:
 
         mapping: dict
             Mapping of values to patch properties. The dict can either specify
-            only the facecolor or other patches properties. Example shown
-            below.
-
-            mapping = {'Missense': 'orange',
-                       'Nonsense': {'facecolor': 'pink', 'alpha': 0.5}}
-
-            Defaults to the vivid color map from palettable.
+            only the facecolor or other patches properties.
 
             Note:
             ----
-            Three values are required to fully specify mapping:
+            Three additional values are required to fully specify mapping:
 
             'Absent', which determines the color for samples without value
             for a name (default white).
@@ -335,8 +330,7 @@ class CoMut:
 
         Returns:
         --------
-        self: CoMut object
-            CoMut object with updated plot attribute.'''
+        None'''
 
         # check that required columns exist
         req_cols = {'sample', 'category', 'value'}
@@ -350,11 +344,11 @@ class CoMut:
         if self.samples is None:
             self.samples = samples
         else:
-            self.check_samples(samples)
+            self._check_samples(samples)
 
         # set defaults
         if name is None:
-            name = len(self.plots)
+            name = len(self._plots)
 
         if borders is None:
             borders = []
@@ -381,7 +375,7 @@ class CoMut:
 
             # assign colors to other unique values
             non_border = [val for val in unique_values if val not in borders]
-            default_cmap = self.get_default_categorical_cmap(len(non_border))
+            default_cmap = self._get_default_categorical_cmap(len(non_border))
             for i, value in enumerate(unique_values):
                  mapping[value] = {'facecolor': default_cmap[i]}
 
@@ -391,7 +385,7 @@ class CoMut:
 
         elif isinstance(mapping, dict):
 
-            # copy the user mapping to avoid overwriting their mapping variabel
+            # copy the user mapping to avoid overwriting their mapping variable
             mapping = mapping.copy()
 
             # update user color map with reserved values if not present
@@ -426,18 +420,18 @@ class CoMut:
             raise ValueError('Invalid mapping. Mapping must be a dict.')
 
         # parse data into dataframe of tuples as required for plotting
-        parsed_data = self.parse_categorical_data(data, category_order, self.samples,
+        parsed_data = self._parse_categorical_data(data, category_order, self.samples,
                                              value_order, priority)
 
         # store plot data
         plot_data = {'data': parsed_data, 'patches_options': mapping,
                      'tick_style': tick_style, 'borders': borders, 'type': 'categorical'}
 
-        self.plots[name] = plot_data
-        return self
+        self._plots[name] = plot_data
+        return None
 
     def add_continuous_data(self, data, mapping='binary', tick_style='normal',
-                            value_range=(0, 1), cat_mapping=None, name=None):
+                            value_range=None, cat_mapping=None, name=None):
         '''Add a sample level continuous data to the CoMut object
 
         Params:
@@ -454,7 +448,7 @@ class CoMut:
 
         value_range: tuple or list
                min and max value of the data. Data will be normalized using
-               this range to fit (0, 1)
+               this range to fit (0, 1). Defaults to the range of the data.
 
         cat_mapping: dict
             Mapping from a discrete category to patch color. Primarily used
@@ -470,8 +464,7 @@ class CoMut:
 
         Returns:
         --------
-        self: CoMut object
-            CoMut object with updated plot attribute.'''
+        None'''
 
         # check that required columns exist
         req_cols = {'sample', 'category', 'value'}
@@ -485,7 +478,7 @@ class CoMut:
         if self.samples is None:
             self.samples = samples
         else:
-            self.check_samples(samples)
+            self._check_samples(samples)
 
         # check that only one category is in the dataframe
         if len(set(data['category'])) > 1:
@@ -493,7 +486,13 @@ class CoMut:
 
         # make default name
         if name is None:
-            name = len(self.plots)
+            name = len(self._plots)
+
+        if value_range is None:
+            data_max = pd.to_numeric(data['value'], 'coerce').max()
+            data_min = pd.to_numeric(data['value'], 'coerce').min()
+        else:
+            data_min, data_max = value_range
 
         # make default categorical mapping
         if cat_mapping is None:
@@ -507,8 +506,10 @@ class CoMut:
             if 'Not Available' not in cat_mapping:
                 cat_mapping['Not Available'] = {'facecolor': 'none', 'edgecolor': 'black', 'linewidth': 1}
 
-        # normalize data to (0,1)
-        data_min, data_max = value_range
+        # if values in cat_mapping aren't kwargs, convert to patches kwargs
+        for key, value in cat_mapping.items():
+            if not isinstance(value, dict):
+                mapping[key] = {'facecolor': value}
 
         def normalize(x):
             if isinstance(x, (int, float)):
@@ -516,7 +517,7 @@ class CoMut:
             else:
                 return x
 
-        # normnalize data to range
+        # normalize data to range
         norm_data = data.copy()
         norm_data.loc[:, 'value'] = data.loc[:, 'value'].apply(normalize)
         if isinstance(mapping, str):
@@ -537,15 +538,15 @@ class CoMut:
 
         # data is now essentially categorical, so use that to parse data
         category_order = list(norm_data['category'].drop_duplicates())
-        parsed_data = self.parse_categorical_data(data=norm_data, category_order=category_order,
+        parsed_data = self._parse_categorical_data(data=norm_data, category_order=category_order,
                                              sample_order=self.samples, value_order=[], priority=[])
 
         # store plot data
         plot_data = {'data': parsed_data, 'patches_options': dict_mapping, 'tick_style': tick_style,
                      'type': 'continuous'}
 
-        self.plots[name] = plot_data
-        return self
+        self._plots[name] = plot_data
+        return None
 
     def add_bar_data(self, data, name=None, stacked=False, mapping=None,
                      ylabel='', bar_kwargs=None):
@@ -564,9 +565,7 @@ class CoMut:
             index of the plot being added.
 
         stacked: bool, default=False
-            Whether the bar graph should be stacked. Stacked bar graphs will
-            stack by column, with the the first non sample being the
-            bottom-most part of the stack.
+            Whether the bar graph should be stacked.
 
         mapping: dict
             A mapping of column to color. Dictionary should map column name
@@ -580,8 +579,7 @@ class CoMut:
 
         Returns:
         --------
-        self: CoMut object
-            CoMut object with updated plot attribute.'''
+        None'''
 
         # check formatting
         if data.columns[0] != 'sample':
@@ -589,7 +587,7 @@ class CoMut:
 
         # make defaults
         if name is None:
-            name = len(self.plots)
+            name = len(self._plots)
 
         if bar_kwargs is None:
             bar_kwargs = {}
@@ -602,7 +600,7 @@ class CoMut:
         if self.samples is None:
             self.samples = samples
         else:
-            self.check_samples(samples)
+            self._check_samples(samples)
 
             # add missing samples and assign 0 value for all columns
             missing_samples = list(set(self.samples) - set(samples))
@@ -612,7 +610,7 @@ class CoMut:
         # make default mapping
         if mapping is None:
             num_cats = len(bar_df_indexed.columns)
-            default_cmap = self.get_default_categorical_cmap(num_cats)
+            default_cmap = self._get_default_categorical_cmap(num_cats)
             mapping = {column: default_cmap[i]
                        for i, column in enumerate(bar_df_indexed.columns)}
 
@@ -620,8 +618,8 @@ class CoMut:
         plot_data = {'data': bar_df_indexed, 'bar_options': mapping, 'type': 'bar',
                      'stacked': stacked, 'ylabel': ylabel, 'bar_kwargs': bar_kwargs}
 
-        self.plots[name] = plot_data
-        return self
+        self._plots[name] = plot_data
+        return None
 
     def add_sample_indicators(self, data, name=None,
                               plot_kwargs=None):
@@ -645,8 +643,7 @@ class CoMut:
 
         Returns:
         --------
-        self: CoMut object
-            CoMut object with updated plot attribute.'''
+        None'''
 
         # check for required columns
         req_cols = {'sample', 'group'}
@@ -657,7 +654,7 @@ class CoMut:
 
         # make defaults
         if name is None:
-            name = len(self.plots)
+            name = len(self._plots)
 
         if plot_kwargs is None:
             plot_kwargs = {'color': 'black', 'marker': 'o', 'markersize': 3}
@@ -670,7 +667,7 @@ class CoMut:
         if self.samples is None:
             self.samples = samples
         else:
-            self.check_samples(samples)
+            self._check_samples(samples)
 
             # add missing samples and assign them NaN. They will be skipped.
             missing_samples = list(set(self.samples) - set(samples))
@@ -692,10 +689,10 @@ class CoMut:
         plot_data = {'data': data_indexed, 'plot_options': plot_kwargs,
                      'type': 'indicator'}
 
-        self.plots[name] = plot_data
-        return self
+        self._plots[name] = plot_data
+        return None
 
-    def plot_patch_data(self, ax, data, name, mapping, borders, tick_style,
+    def _plot_patch_data(self, ax, data, name, mapping, borders, tick_style,
                         x_padding=0, y_padding=0, tri_padding=0):
         '''Plot data represented as patches on CoMut plot
 
@@ -813,9 +810,9 @@ class CoMut:
                 # use rectangles to draw single boxes
                 if num_values != 2:
 
-                    # handle Absent and Multiple - Absent label is None to subvert legend
+                    # handle Absent and Multiple
                     if num_values == 0:
-                        label = None
+                        label = 'Absent'
                         patch_options = mapping['Absent']
                     elif num_values > 2:
                         label = 'Multiple'
@@ -851,7 +848,7 @@ class CoMut:
                     patch_options_2 = mapping[alt_2]
 
                     # build triangles with triangle padding
-                    tri_1, tri_2 = self.get_triangles(x_base, y_base, tri_padding,
+                    tri_1, tri_2 = self._get_triangles(x_base, y_base, tri_padding,
                                                  height, width)
 
                     tri_1_patch = patches.Polygon(tri_1, label=alt_1_label, **patch_options_1)
@@ -893,7 +890,7 @@ class CoMut:
         self.axes[name] = ax
         return ax
 
-    def plot_bar_data(self, ax, data, name, mapping, stacked, ylabel, bar_kwargs):
+    def _plot_bar_data(self, ax, data, name, mapping, stacked, ylabel, bar_kwargs):
         '''Plot bar plot on CoMut plot
 
         Params:
@@ -914,9 +911,7 @@ class CoMut:
             to color (str) or to plot kwargs.
 
         stacked: bool
-            Whether the bar graph should be stacked. Stacked bar graphs will
-            stack by column, with the the first column being the bottom-most
-            part of the stack.
+            Whether the bar graph should be stacked.
 
         ylabel: str
             The label for the y axis
@@ -1011,8 +1006,7 @@ class CoMut:
 
         Returns:
         --------
-        self: CoMut object
-            CoMut object with updated plot attribute.'''
+        None'''
 
         # check formatting
         if data.columns[0] != 'category':
@@ -1020,7 +1014,7 @@ class CoMut:
 
         # make defaults
         if name is None:
-            name = len(self.plots)
+            name = len(self._plots)
 
         if position not in ['left', 'right']:
             raise ValueError('Position must be left or right')
@@ -1029,12 +1023,12 @@ class CoMut:
             bar_kwargs = {}
 
         # side plots must be paired with a plot that exists
-        if paired_name not in self.plots:
+        if paired_name not in self._plots:
             raise KeyError('Plot {} does not exist. Side plots must be added'
                            'to an already existing plot'.format(paired_name))
 
         # currently, side plot must be paired with a categorical dataset
-        paired_plot = self.plots[paired_name]
+        paired_plot = self._plots[paired_name]
         if paired_plot['type'] != 'categorical':
             raise ValueError('Side plots can only be added to categorical data')
 
@@ -1065,10 +1059,10 @@ class CoMut:
                      'stacked': stacked, 'position': position, 'xlabel': xlabel,
                      'bar_kwargs': bar_kwargs}
 
-        self.side_plots[paired_name][name] = plot_data
-        return self
+        self._side_plots[paired_name][name] = plot_data
+        return None
 
-    def plot_indicator_data(self, ax, data, name, plot_kwargs):
+    def _plot_indicator_data(self, ax, data, name, plot_kwargs):
         '''Plot data that connects samples with similar characteristics.
 
         Params:
@@ -1121,7 +1115,7 @@ class CoMut:
         self.axes[name] = ax
         return self
 
-    def plot_side_bar_data(self, ax, name, data, mapping, position, stacked,
+    def _plot_side_bar_data(self, ax, name, data, mapping, position, stacked,
                            xlabel, y_padding, bar_kwargs):
         '''Plot side bar plot on CoMut plot
 
@@ -1219,7 +1213,7 @@ class CoMut:
         self.axes[name] = ax
         return ax
 
-    def plot_data_on_axis(self, ax, plot_name, x_padding, y_padding, tri_padding):
+    def _plot_data_on_axis(self, ax, plot_name, x_padding, y_padding, tri_padding):
         '''Wrapper function for plotting data on an axis
 
         Params:
@@ -1242,38 +1236,38 @@ class CoMut:
         ax: The axis object with now plotted_data'''
 
         # extract the plot type and data
-        plot_type = self.plots[plot_name]['type']
-        data = self.plots[plot_name]['data']
+        plot_type = self._plots[plot_name]['type']
+        data = self._plots[plot_name]['data']
 
         # extract relevant plotting params depending on plot type, then plot
         if plot_type == 'categorical' or plot_type == 'continuous':
-            mapping = self.plots[plot_name]['patches_options']
-            borders = self.plots[plot_name]['borders'] if plot_type == 'categorical' else []
-            tick_style = self.plots[plot_name]['tick_style']
-            ax = self.plot_patch_data(ax=ax, data=data, name=plot_name, mapping=mapping, borders=borders,
+            mapping = self._plots[plot_name]['patches_options']
+            borders = self._plots[plot_name]['borders'] if plot_type == 'categorical' else []
+            tick_style = self._plots[plot_name]['tick_style']
+            ax = self._plot_patch_data(ax=ax, data=data, name=plot_name, mapping=mapping, borders=borders,
                                       x_padding=x_padding, y_padding=y_padding, tri_padding=tri_padding,
                                       tick_style=tick_style)
 
         elif plot_type == 'bar':
-            mapping = self.plots[plot_name]['bar_options']
-            stacked = self.plots[plot_name]['stacked']
-            ylabel = self.plots[plot_name]['ylabel']
-            bar_kwargs = self.plots[plot_name]['bar_kwargs']
+            mapping = self._plots[plot_name]['bar_options']
+            stacked = self._plots[plot_name]['stacked']
+            ylabel = self._plots[plot_name]['ylabel']
+            bar_kwargs = self._plots[plot_name]['bar_kwargs']
 
             # set the default width based on padding if not specified for bars
             if 'width' not in bar_kwargs:
                 bar_kwargs['width'] = 1 - 2*x_padding
-            ax = self.plot_bar_data(ax=ax, data=data, name=plot_name, mapping=mapping,
+            ax = self._plot_bar_data(ax=ax, data=data, name=plot_name, mapping=mapping,
                                     stacked=stacked, ylabel=ylabel, bar_kwargs=bar_kwargs)
 
         elif plot_type == 'indicator':
-            plot_kwargs = self.plots[plot_name]['plot_options']
-            ax = self.plot_indicator_data(ax=ax, data=data, name=plot_name, plot_kwargs=plot_kwargs)
+            plot_kwargs = self._plots[plot_name]['plot_options']
+            ax = self._plot_indicator_data(ax=ax, data=data, name=plot_name, plot_kwargs=plot_kwargs)
 
         return ax
 
-    def get_default_widths_and_comut_loc(self):
-        '''Gets default widths from plots present in self.side_plots,
+    def _get_default_widths_and_comut_loc(self):
+        '''Gets default widths from plots present in side_plots,
         as well as the index location of the CoMut in widths.
 
         Returns:
@@ -1287,7 +1281,7 @@ class CoMut:
 
         # determine the maximum number of right and left plots
         max_left, max_right = 0, 0
-        for side_plots in self.side_plots.values():
+        for side_plots in self._side_plots.values():
             positions = [side_plot['position'] for side_plot in side_plots.values()]
 
             if positions.count('left') > max_left:
@@ -1303,8 +1297,8 @@ class CoMut:
 
         return default_widths, comut_idx
 
-    def get_default_height(self, name, plot_type):
-        '''Returns default height for plots
+    def _get_default_height(self, name, plot_type):
+        '''Returns default height for a plot
 
         Params:
         -------
@@ -1320,7 +1314,7 @@ class CoMut:
             Default height for plot type'''
 
         if plot_type == 'categorical':
-            data = self.plots[name]['data']
+            data = self._plots[name]['data']
             height = len(data)
 
         elif plot_type == 'continuous':
@@ -1337,7 +1331,7 @@ class CoMut:
 
         return height
 
-    def get_height_structure(self, structure, heights):
+    def _get_height_spec(self, structure, heights):
         '''Gets the default heights for plots in the CoMut.
 
         Height values for each plot type default to the following:
@@ -1378,11 +1372,11 @@ class CoMut:
                 name = plot[0]
 
                 # get default height if no user height specified
-                plot_type = self.plots[name]['type']
+                plot_type = self._plots[name]['type']
                 if name in heights:
                     plot_height = heights[name]
                 else:
-                    plot_height = self.get_default_height(name, plot_type)
+                    plot_height = self._get_default_height(name, plot_type)
 
                 structure_heights.append([plot_height])
 
@@ -1390,13 +1384,13 @@ class CoMut:
             else:
                 subplot_heights = []
                 for name in plot:
-                    plot_type = self.plots[name]['type']
+                    plot_type = self._plots[name]['type']
 
                     # get default height if no user height specified
                     if name in heights:
                         plot_height = heights[name]
                     else:
-                        plot_height = self.get_default_height(name, plot_type)
+                        plot_height = self._get_default_height(name, plot_type)
 
                     subplot_heights.append(plot_height)
                 structure_heights.append(subplot_heights)
@@ -1491,24 +1485,24 @@ class CoMut:
         Example
         --------
         # create CoMut object
-        comut = CoMut()
+        ex_comut = comut.CoMut()
 
         # add mutation data
-        comut.add_categorical_data(mutation_data, name='mutation')
+        ex_comut.add_categorical_data(mutation_data, name='mutation')
 
         # add clinical data
-        comut.add_categorical_data(tumor_stage, name='tumor_stage')
-        comut.add_continuous_data(purity_data, name='purity')
+        ex_comut.add_categorical_data(tumor_stage, name='tumor_stage')
+        ex_comut.add_continuous_data(purity_data, name='purity')
 
         # plot CoMut data
-        comut.plot_comut()
+        ex_comut.plot_comut()
 
-        # comut.axes will be a dictionary with keys 'mutation', 'tumor_stage',
+        # ex_comut.axes will be a dictionary with keys 'mutation', 'tumor_stage',
         # and 'purity', with values equal to the plotted axes.'''
 
         # default structure is each plot to its own subplot
         if structure is None:
-            structure = [[plot] for plot in self.plots]
+            structure = [[plot] for plot in self._plots]
 
         if heights is None:
             heights = {}
@@ -1517,7 +1511,7 @@ class CoMut:
         num_subplots = len(structure)
 
         # get height structure based on input heights
-        heights = self.get_height_structure(structure, heights)
+        heights = self._get_height_spec(structure, heights)
 
         # calculate height of plots for gridspeccing. Heights are
         # reversed to match CoMut plotting (bottom to top)
@@ -1530,9 +1524,9 @@ class CoMut:
         # make default widths and determine location of CoMut. If widths give,
         # just calculate location of CoMut
         if widths is None:
-            widths, comut_idx = self.get_default_widths_and_comut_loc()
+            widths, comut_idx = self._get_default_widths_and_comut_loc()
         else:
-            _, comut_idx = self.get_default_widths_and_comut_loc()
+            _, comut_idx = self._get_default_widths_and_comut_loc()
 
         # number of cols is equal to size of widths
         num_cols = len(widths)
@@ -1551,7 +1545,6 @@ class CoMut:
 
         # plot each plot in subplots
         for i, (plot, height) in enumerate(zip(structure, heights)):
-
             # subplots share an x axis with first plot
             if i == 0:
                 sharex = None
@@ -1563,10 +1556,10 @@ class CoMut:
             if len(plot) == 1:
                 plot_name = plot[0]
                 ax = fig.add_subplot(spec[num_subplots - i - 1, comut_idx], sharex=sharex)
-                ax = self.plot_data_on_axis(ax=ax, plot_name=plot_name, x_padding=x_padding, y_padding=y_padding, tri_padding=tri_padding)
+                ax = self._plot_data_on_axis(ax=ax, plot_name=plot_name, x_padding=x_padding, y_padding=y_padding, tri_padding=tri_padding)
 
                 # extract all sideplots on this axis
-                side_plots = self.side_plots[plot_name]
+                side_plots = self._side_plots[plot_name]
 
                 # identify the locations of each sideplot and plot from inward -> outward
                 left_idx, right_idx = 1, 1
@@ -1581,7 +1574,7 @@ class CoMut:
 
                     # sideplots are paired with central CoMut plot
                     side_ax = fig.add_subplot(spec[num_subplots - i - 1, sideplot_idx])
-                    side_ax = self.plot_side_bar_data(side_ax, side_name, y_padding = y_padding,
+                    side_ax = self._plot_side_bar_data(side_ax, side_name, y_padding = y_padding,
                                                       **side_plot)
 
                     # force side axis to match paired axis. Avoiding sharey in case
@@ -1591,6 +1584,9 @@ class CoMut:
             # if multiple plots in subplot, subplot gridspec required
             else:
                 num_plots = len(plot)
+
+                # reverse the heights to be bottom up
+                height = height [::-1]
                 subplot_spec = gridspec.GridSpecFromSubplotSpec(ncols=1, nrows=num_plots,
                                                                 hspace=subplot_hspace, subplot_spec=spec[num_subplots - i - 1, comut_idx],
                                                                 height_ratios=height)
@@ -1599,10 +1595,10 @@ class CoMut:
 
                     # plot the data on a subplot within that subgridspec
                     ax = fig.add_subplot(subplot_spec[num_plots - j - 1, 0], sharex=sharex)
-                    ax = self.plot_data_on_axis(ax=ax, plot_name=plot_name, x_padding=x_padding, y_padding=y_padding, tri_padding=tri_padding)
+                    ax = self._plot_data_on_axis(ax=ax, plot_name=plot_name, x_padding=x_padding, y_padding=y_padding, tri_padding=tri_padding)
 
                     # side bar plots are not allowed for plots within a subplot
-                    if self.side_plots[plot_name]:
+                    if self._side_plots[plot_name]:
                         raise ValueError('Side bar plot for {} cannot be created. '
                                          'Plots within a subplot cannot have a side plot.'.format(plot_name))
 
@@ -1616,7 +1612,8 @@ class CoMut:
         return self
 
     def add_axis_legend(self, name, border_white=None, rename=None, order=None,
-                        ignored_values=None, title_align='left', **legend_kwargs):
+                        ignored_values=None, title_align='left', bbox_to_anchor=(1, 1),
+                        frameon=False, **legend_kwargs):
         '''Add a legend to a named axis of the CoMut plot
 
         Params:
@@ -1626,30 +1623,31 @@ class CoMut:
             when data is added.
 
         border_white: list-like
-            List of categories to border for legend entry. Can be useful
-            when the CoMut patch should be white but the legend should be a
-            white box bordered in black.
-
-            Note that this will replace whatever patch currently exists with a
-            white box bordered in black.
+            List of categories to replace with a black bordered box.
 
         rename: dict
             A dictionary for renaming categories. The key should be the
             original category name, with value as the new category name.
 
         order: list-like
-            Order of categories in the legend. By default, categories are
-            sorted alphabetically. If a subset of categories are provided,
-            the categories in order will be given in the specified order and
-            the rest sorted alphabetically.
+            Order of values in the legend. By default, values are
+            sorted alphabetically. If a subset of values are provided,
+            the values in order will be given and the rest sorted
+            alphabetically.
 
         ignored_values: list-list
-            List of ignored values. These categories will be ignored by
-            the legend. Defaults to ['Not Available'].
+            List of values ignored by the legend. Defaults to
+            ['Not Available', 'Absent'].
 
         title_align: str, one of 'left', 'center', or 'right', default 'left'
             The alignment of the legend title in the legend. If no title is
             specified, nothing happens.
+
+        bbox_to_anchor: BboxBase, 2-tuple, or 4-tuple of floats, default (1, 1)
+            The location of the legend relative to the axis.
+
+        frameon: bool, default False
+            Whether a frame should be drawn around the legend
 
         legend_kwargs: kwargs
             kwargs to pass to plt.legend()
@@ -1671,13 +1669,7 @@ class CoMut:
             order = []
 
         if ignored_values is None:
-            ignored_values = ['Not Available']
-
-        # add defaults to legend_kwargs if not present
-        if 'bbox_to_anchor' not in legend_kwargs:
-            legend_kwargs['bbox_to_anchor'] = (1,1)
-        if 'frameon' not in legend_kwargs:
-            legend_kwargs['frameon'] = False
+            ignored_values = ['Not Available', 'Absent']
 
         # extract current handles and labels on axis
         handles, labels = self.axes[name].get_legend_handles_labels()
@@ -1699,19 +1691,20 @@ class CoMut:
                 del handle_lookup[value]
 
         # sort labels by order, reorder handles to match
-        sorted_labels = self.sort_list_by_list(handle_lookup.keys(), order)
+        sorted_labels = self._sort_list_by_list(handle_lookup.keys(), order)
         sorted_handles = [handle_lookup[label] for label in sorted_labels]
 
         # create legend
-        legend = self.axes[name].legend(sorted_handles, sorted_labels, **legend_kwargs)
+        legend = self.axes[name].legend(sorted_handles, sorted_labels, bbox_to_anchor=bbox_to_anchor,
+                                        frameon=frameon, **legend_kwargs)
 
         # align legend title
         legend._legend_box.align = title_align
         return legend
 
-    def add_unified_legend(self, axis_name=None, border_white=None, headers='left',
+    def add_unified_legend(self, axis_name=None, border_white=None, headers=True,
                            rename=None, bbox_to_anchor=(1, 1), ignored_values=None,
-                           **legend_kwargs):
+                           frameon=False, **legend_kwargs):
         '''Add a unified legend to the CoMut plot
 
         This combines all the various legends into a one column master legend.
@@ -1731,9 +1724,9 @@ class CoMut:
             Note that this will replace whatever patch currently exists with a
             white box bordered in black.
 
-        headers: str, default 'left'
-            The locatinon of the legend subheaders in the legend. If no legend
-            subheaders are desired, you can use an empty string or None.
+        headers: bool, default True
+            Whether the legend should include subtitles. Subtitles are left
+            aligned.
 
         rename: dict
             A dictionary for renaming categories. The key should be the
@@ -1745,12 +1738,15 @@ class CoMut:
         bbox_to_anchor: BboxBase, 2-tuple, or 4-tuple of floats, default (1,1)
             The location of the legend relative to the axis.
 
-        ignored_values: list-list
+        ignored_values: list-like
             List of ignored values. These categories will be ignored by
-            the legend. Defaults to ['Not Available'].
+            the legend. Defaults to ['Absent', 'Not Available'].
+
+        frameon: bool, default False
+            Whether a frame should be drawn around the legend
 
         legend_kwargs: kwargs
-            Other kwargs to pass to ax.legend()
+            Other kwargs to pass to ax.legend().
 
         Returns:
         --------
@@ -1764,15 +1760,15 @@ class CoMut:
             rename = {}
 
         if ignored_values is None:
-            ignored_values = ['Not Available']
+            ignored_values = ['Absent', 'Not Available']
 
         # store labels and patches
         legend_labels = []
         legend_patches = []
 
         # loop through plots in reverse order (since plots are bottom up)
-        plot_names = list(self.plots.keys())[::-1]
-        plot_data_list = list(self.plots.values())[::-1]
+        plot_names = list(self._plots.keys())[::-1]
+        plot_data_list = list(self._plots.values())[::-1]
 
         # extract the legend information for each plot and add to storage
         for name, plot_data in zip(plot_names, plot_data_list):
@@ -1824,13 +1820,13 @@ class CoMut:
 
         # add legend to axis
         leg = axis.legend(labels=legend_labels, handles=legend_patches,
-                          bbox_to_anchor=bbox_to_anchor, frameon=False, **legend_kwargs)
+                          bbox_to_anchor=bbox_to_anchor, frameon=frameon, **legend_kwargs)
 
         # more involved code to align the headers
         if headers:
             vpackers = leg.findobj(offsetbox.VPacker)
             for vpack in vpackers[:-1]:  # Last vpack will be the title box
-                vpack.align = headers
+                vpack.align = 'left'
                 for hpack in vpack.get_children():
                     draw_area, text_area = hpack.get_children()
                     for collection in draw_area.get_children():

@@ -6,6 +6,5 @@ Repository containing code for creating comutation plots in Python
 </p>
 
 `quickstart.ipynb` gives a framework for creating basic comut plots based on input data
-`tutorial.ipynb` gives more in depth documentation for CoMut, as well as provide a walkthrough using some simulated data
 
-The current implementation requires palettable, so run `pip install palettable` before running these notebooks.
+`tutorial.ipynb` gives more in depth documentation for CoMut, as well as provide a walkthrough using some simulated data
