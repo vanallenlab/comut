@@ -1,0 +1,12 @@
+category	-log(Q)
+BRCA2	0.1
+NRAS	0.3
+RB1	0.5
+TP53	0.8
+BRAF	1.2
+MYC	1.5
+HER2	2.0
+PTEN	3.0
+KRAS	4.0
+YAP	5.0
+ATM	6.0

@@ -1,0 +1,303 @@
+sample	category	value
+Patient18	MYC	Baseline
+Patient18	MYC	Baseline
+Patient49	MYC	Allelic amplification
+Patient49	MYC	Allelic amplification
+Patient21	MYC	Baseline
+Patient21	MYC	Baseline
+Patient32	MYC	Allelic amplification
+Patient32	MYC	Allelic deletion
+Patient14	MYC	Baseline
+Patient14	MYC	Baseline
+Patient43	MYC	Allelic amplification
+Patient43	MYC	aCN = 0
+Patient55	MYC	Baseline
+Patient55	MYC	Baseline
+Patient27	MYC	Baseline
+Patient27	MYC	Baseline
+Patient61	MYC	Baseline
+Patient61	MYC	Baseline
+Patient62	MYC	Baseline
+Patient62	MYC	Baseline
+Patient51	MYC	Allelic amplification
+Patient51	MYC	Baseline
+Patient10	MYC	Allelic amplification
+Patient10	MYC	Baseline
+Patient96	MYC	Allelic amplification
+Patient96	MYC	Baseline
+Patient7	MYC	Allelic amplification
+Patient7	MYC	Allelic amplification
+Patient8	MYC	Baseline
+Patient8	MYC	Baseline
+Patient17	MYC	Baseline
+Patient17	MYC	Baseline
+Patient36	MYC	Allelic amplification
+Patient36	MYC	Baseline
+Patient9	MYC	Baseline
+Patient9	MYC	Baseline
+Patient83	MYC	Baseline
+Patient83	MYC	Baseline
+Patient37	MYC	Baseline
+Patient37	MYC	Baseline
+Patient11	MYC	Baseline
+Patient11	MYC	Baseline
+Patient45	MYC	Baseline
+Patient45	MYC	Baseline
+Patient79	MYC	Baseline
+Patient79	MYC	Baseline
+Patient75	MYC	Baseline
+Patient75	MYC	Allelic deletion
+Patient15	MYC	Baseline
+Patient15	MYC	Baseline
+Patient13	MYC	Allelic amplification
+Patient13	MYC	Baseline
+Patient25	MYC	Baseline
+Patient25	MYC	Baseline
+Patient31	MYC	Baseline
+Patient31	MYC	Baseline
+Patient86	MYC	Baseline
+Patient86	MYC	Baseline
+Patient41	MYC	Baseline
+Patient41	MYC	Allelic deletion
+Patient98	MYC	Allelic amplification
+Patient98	MYC	Baseline
+Patient72	MYC	Allelic amplification
+Patient72	MYC	Baseline
+Patient99	MYC	Baseline
+Patient99	MYC	aCN = 0
+Patient4	MYC	Baseline
+Patient4	MYC	Baseline
+Patient40	MYC	Baseline
+Patient40	MYC	Baseline
+Patient30	MYC	Allelic amplification
+Patient30	MYC	Baseline
+Patient47	MYC	Baseline
+Patient47	MYC	Allelic deletion
+Patient60	MYC	Baseline
+Patient60	MYC	aCN = 0
+Patient59	MYC	Baseline
+Patient59	MYC	Baseline
+Patient87	MYC	Baseline
+Patient87	MYC	Baseline
+Patient23	MYC	Baseline
+Patient23	MYC	Baseline
+Patient94	MYC	Baseline
+Patient94	MYC	Baseline
+Patient20	MYC	Baseline
+Patient20	MYC	Baseline
+Patient73	MYC	Allelic amplification
+Patient73	MYC	Baseline
+Patient77	MYC	Allelic amplification
+Patient77	MYC	Baseline
+Patient50	MYC	Allelic amplification
+Patient50	MYC	Baseline
+Patient82	MYC	Allelic amplification
+Patient82	MYC	aCN = 0
+Patient38	MYC	Allelic amplification
+Patient38	MYC	Baseline
+Patient78	MYC	Allelic amplification
+Patient78	MYC	Allelic deletion
+Patient63	MYC	Baseline
+Patient63	MYC	aCN = 0
+Patient54	MYC	Baseline
+Patient54	MYC	Baseline
+Patient42	MYC	Baseline
+Patient42	MYC	Allelic deletion
+Patient18	CDKN2A	Complex
+Patient49	CDKN2A	aCN = 0
+Patient49	CDKN2A	aCN = 0
+Patient21	CDKN2A	Baseline
+Patient21	CDKN2A	aCN = 0
+Patient32	CDKN2A	Allelic amplification
+Patient32	CDKN2A	aCN = 0
+Patient14	CDKN2A	Baseline
+Patient14	CDKN2A	aCN = 0
+Patient43	CDKN2A	Allelic deletion
+Patient43	CDKN2A	aCN = 0
+Patient55	CDKN2A	Baseline
+Patient55	CDKN2A	Baseline
+Patient27	CDKN2A	Baseline
+Patient27	CDKN2A	aCN = 0
+Patient61	CDKN2A	Baseline
+Patient61	CDKN2A	aCN = 0
+Patient62	CDKN2A	Baseline
+Patient62	CDKN2A	aCN = 0
+Patient51	CDKN2A	Baseline
+Patient51	CDKN2A	Allelic deletion
+Patient10	CDKN2A	Baseline
+Patient10	CDKN2A	aCN = 0
+Patient96	CDKN2A	Baseline
+Patient96	CDKN2A	Baseline
+Patient7	CDKN2A	CN-LOH
+Patient8	CDKN2A	Baseline
+Patient8	CDKN2A	aCN = 0
+Patient17	CDKN2A	Allelic deletion
+Patient17	CDKN2A	aCN = 0
+Patient36	CDKN2A	Baseline
+Patient36	CDKN2A	aCN = 0
+Patient9	CDKN2A	Baseline
+Patient9	CDKN2A	aCN = 0
+Patient83	CDKN2A	Not Available
+Patient37	CDKN2A	Baseline
+Patient37	CDKN2A	Baseline
+Patient11	CDKN2A	Baseline
+Patient11	CDKN2A	Allelic deletion
+Patient45	CDKN2A	Baseline
+Patient45	CDKN2A	Baseline
+Patient79	CDKN2A	Baseline
+Patient79	CDKN2A	aCN = 0
+Patient75	CDKN2A	Baseline
+Patient75	CDKN2A	Allelic deletion
+Patient15	CDKN2A	CN-LOH
+Patient13	CDKN2A	Not Available
+Patient25	CDKN2A	Baseline
+Patient25	CDKN2A	Baseline
+Patient31	CDKN2A	Allelic deletion
+Patient31	CDKN2A	Allelic deletion
+Patient86	CDKN2A	Baseline
+Patient86	CDKN2A	Baseline
+Patient41	CDKN2A	Baseline
+Patient41	CDKN2A	Baseline
+Patient98	CDKN2A	Baseline
+Patient98	CDKN2A	aCN = 0
+Patient72	CDKN2A	aCN = 0
+Patient72	CDKN2A	aCN = 0
+Patient99	CDKN2A	Allelic deletion
+Patient99	CDKN2A	Allelic deletion
+Patient4	CDKN2A	aCN = 0
+Patient4	CDKN2A	aCN = 0
+Patient40	CDKN2A	Complex
+Patient30	CDKN2A	aCN = 0
+Patient30	CDKN2A	aCN = 0
+Patient47	CDKN2A	aCN = 0
+Patient47	CDKN2A	aCN = 0
+Patient60	CDKN2A	Baseline
+Patient60	CDKN2A	aCN = 0
+Patient59	CDKN2A	Baseline
+Patient59	CDKN2A	aCN = 0
+Patient87	CDKN2A	Baseline
+Patient87	CDKN2A	aCN = 0
+Patient23	CDKN2A	Baseline
+Patient23	CDKN2A	aCN = 0
+Patient94	CDKN2A	Not Available
+Patient20	CDKN2A	Not Available
+Patient73	CDKN2A	Baseline
+Patient73	CDKN2A	aCN = 0
+Patient77	CDKN2A	Baseline
+Patient77	CDKN2A	aCN = 0
+Patient50	CDKN2A	Baseline
+Patient50	CDKN2A	aCN = 0
+Patient82	CDKN2A	aCN = 0
+Patient82	CDKN2A	aCN = 0
+Patient38	CDKN2A	Baseline
+Patient38	CDKN2A	Baseline
+Patient78	CDKN2A	Baseline
+Patient78	CDKN2A	aCN = 0
+Patient63	CDKN2A	aCN = 0
+Patient63	CDKN2A	aCN = 0
+Patient54	CDKN2A	Baseline
+Patient54	CDKN2A	Baseline
+Patient42	CDKN2A	Allelic deletion
+Patient42	CDKN2A	Allelic deletion
+Patient18	TP53	Baseline
+Patient18	TP53	Baseline
+Patient49	TP53	Baseline
+Patient49	TP53	Baseline
+Patient21	TP53	Baseline
+Patient21	TP53	Baseline
+Patient32	TP53	Baseline
+Patient32	TP53	aCN = 0
+Patient14	TP53	Baseline
+Patient14	TP53	Baseline
+Patient43	TP53	Baseline
+Patient43	TP53	Baseline
+Patient55	TP53	Baseline
+Patient55	TP53	Baseline
+Patient27	TP53	Baseline
+Patient27	TP53	aCN = 0
+Patient61	TP53	Baseline
+Patient61	TP53	aCN = 0
+Patient62	TP53	Baseline
+Patient62	TP53	Baseline
+Patient51	TP53	Baseline
+Patient51	TP53	Baseline
+Patient10	TP53	Baseline
+Patient10	TP53	aCN = 0
+Patient96	TP53	Baseline
+Patient96	TP53	aCN = 0
+Patient7	TP53	Baseline
+Patient7	TP53	Baseline
+Patient8	TP53	Baseline
+Patient8	TP53	Baseline
+Patient17	TP53	Baseline
+Patient17	TP53	Allelic deletion
+Patient36	TP53	Baseline
+Patient36	TP53	Baseline
+Patient9	TP53	Baseline
+Patient9	TP53	Baseline
+Patient83	TP53	Baseline
+Patient83	TP53	Baseline
+Patient37	TP53	Baseline
+Patient37	TP53	Baseline
+Patient11	TP53	Baseline
+Patient11	TP53	Allelic deletion
+Patient45	TP53	Baseline
+Patient45	TP53	aCN = 0
+Patient79	TP53	CN-LOH
+Patient75	TP53	Baseline
+Patient75	TP53	Baseline
+Patient15	TP53	Baseline
+Patient15	TP53	Baseline
+Patient13	TP53	Baseline
+Patient13	TP53	Baseline
+Patient25	TP53	Baseline
+Patient25	TP53	Baseline
+Patient31	TP53	Baseline
+Patient31	TP53	Allelic deletion
+Patient86	TP53	Baseline
+Patient86	TP53	Baseline
+Patient41	TP53	CN-LOH
+Patient98	TP53	Baseline
+Patient98	TP53	Baseline
+Patient72	TP53	Baseline
+Patient72	TP53	Allelic deletion
+Patient99	TP53	Baseline
+Patient99	TP53	Allelic deletion
+Patient4	TP53	Baseline
+Patient4	TP53	Baseline
+Patient40	TP53	Baseline
+Patient40	TP53	Baseline
+Patient30	TP53	Baseline
+Patient30	TP53	Baseline
+Patient47	TP53	Allelic deletion
+Patient47	TP53	Allelic deletion
+Patient60	TP53	Baseline
+Patient60	TP53	aCN = 0
+Patient59	TP53	Baseline
+Patient59	TP53	Baseline
+Patient87	TP53	Baseline
+Patient87	TP53	aCN = 0
+Patient23	TP53	Baseline
+Patient23	TP53	aCN = 0
+Patient94	TP53	Baseline
+Patient94	TP53	aCN = 0
+Patient20	TP53	Baseline
+Patient20	TP53	Baseline
+Patient73	TP53	Baseline
+Patient73	TP53	Allelic deletion
+Patient77	TP53	Baseline
+Patient77	TP53	Baseline
+Patient50	TP53	Baseline
+Patient50	TP53	Allelic deletion
+Patient82	TP53	Baseline
+Patient82	TP53	aCN = 0
+Patient38	TP53	Baseline
+Patient38	TP53	Baseline
+Patient78	TP53	Baseline
+Patient78	TP53	aCN = 0
+Patient63	TP53	Baseline
+Patient63	TP53	aCN = 0
+Patient54	TP53	Baseline
+Patient54	TP53	Baseline
+Patient42	TP53	Baseline
+Patient42	TP53	aCN = 0
