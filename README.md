@@ -30,3 +30,8 @@ pandas>=0.25.3
 palettable>=3.3.0
 matplotlib>=3.3.1
 ```
+
+## Versions
+
+0.0.2 - Introduce compatability for Python 3.6
+0.0.1 - Initial release

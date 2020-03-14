@@ -21,11 +21,11 @@ CLASSIFIERS = [
 LICENSE = "MIT"
 DESCRIPTION = "A Python library for creating comutation plots to visualize genomic information"
 URL = "https://github.com/vanallenlab/comut/tree/package"
-PYTHON_REQ = ">=3.7"
+PYTHON_REQ = ">=3.6"
 
 setuptools.setup(
     name=NAME,
-    version="0.0.1",
+    version="0.0.2",
     author=AUTHOR_NAME,
     author_email=AUTHOR_EMAIL,
     description=DESCRIPTION,
