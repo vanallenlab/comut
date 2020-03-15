@@ -14,13 +14,17 @@ CoMut can be installed via `pip`:
 
 ## Quickstart
 
-There is a [Quickstart notebook](https://github.com/vanallenlab/comut/blob/package/examples/quickstart.ipynb) that can create comut plots quickly with only input data. Simply download the notebook, specify the path to your data, and run the cells to produce a basic comut. 
+There is a [Quickstart notebook](https://github.com/vanallenlab/comut/blob/master/examples/quickstart.ipynb) that can create comut plots quickly with only input data. Simply download the notebook, specify the path to your data, and run the cells to produce a basic comut. 
 
 For those who do not want to install Python or jupyter, this notebook is also available as a [Google Colab notebook](https://colab.research.google.com/github/vanallenlab/comut/blob/master/examples/quickstart.ipynb). Here, you can upload your data and run the notebook to make a basic comut.
 
 ## Documentation
 
-There is also a [Documentation notebook](https://github.com/vanallenlab/comut/blob/package/examples/documentation.ipynb) that provides documentation for CoMut. It describes the fundamentals of creating comuts and provides the code used to generate the comut above.
+There is also a [Documentation notebook](https://github.com/vanallenlab/comut/blob/master/examples/documentation.ipynb) that provides documentation for CoMut. It describes the fundamentals of creating comuts and provides the code used to generate the comut above.
+
+## Development
+
+If you would like to report a bug or request a feature, please do so using the [issues page](https://github.com/vanallenlab/comut/issues)
 
 ## Dependencies
 
