@@ -4,3 +4,4 @@ build
 dist
 .ipynb_checkpoints
 *.egg-info
+**/.DS_Store
