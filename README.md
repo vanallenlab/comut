@@ -1,20 +1,23 @@
 # CoMut
-CoMut is a Python library for creating comutation plots to visualize genomic information.
+CoMut is a Python library for creating comutation plots to visualize genomic and phenotypic information.
 
-<p align="center">
-<img align="center" src="examples/images/melanoma_comut.svg" width="1000"/>
-</p>
+![melanoma_comut](https://github.com/vanallenlab/comut/blob/master/examples/images/melanoma_comut.png)
 
 
 ## Installation
 
-CoMut can be installed via `pip`:
+CoMut can be installed via `pip`
 
 `pip install comut`
 
 ## Colab Quickstart
 
 For those who do not want to install Python or other packages, there is a [Google Colab notebook](https://colab.research.google.com/github/vanallenlab/comut/blob/master/examples/quickstart.ipynb) where you can simply upload a [MAF](https://software.broadinstitute.org/software/igv/MutationAnnotationFormat) file and run the notebook to make a basic comut. This file is also available as a [jupyter notebook](https://github.com/vanallenlab/comut/blob/master/examples/quickstart.ipynb) for local use. 
+
+## Citation 
+
+CoMut is now available on biorxiv https://www.biorxiv.org/content/10.1101/2020.03.18.997361v1. If you use CoMut in a paper, please cite:
+> Crowdis, J., He, M.X., Reardon, B., Van Allen, E.M. (2020). CoMut: Visualizing integrated molecular information with comutation plots. bioRxiv doi: 10.1101/2020.03.18.997361v1
 
 ## Documentation
 
