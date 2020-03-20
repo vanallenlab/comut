@@ -19,13 +19,13 @@ CLASSIFIERS = [
     "Topic :: Scientific/Engineering :: Bio-Informatics",
 ]
 LICENSE = "MIT"
-DESCRIPTION = "A Python library for creating comutation plots to visualize genomic information"
-URL = "https://github.com/vanallenlab/comut/tree/package"
+DESCRIPTION = "A Python library for creating comutation plots to visualize genomic and phenotypic information"
+URL = "https://github.com/vanallenlab/comut"
 PYTHON_REQ = ">=3.6"
 
 setuptools.setup(
     name=NAME,
-    version="0.0.2",
+    version="0.0.3",
     author=AUTHOR_NAME,
     author_email=AUTHOR_EMAIL,
     description=DESCRIPTION,
