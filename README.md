@@ -1,7 +1,7 @@
 # CoMut
 CoMut is a Python library for creating comutation plots to visualize genomic and phenotypic information.
 
-![melanoma_comut](https://github.com/vanallenlab/comut/blob/master/examples/images/melanoma_comut.png)
+![melanoma_comut](https://raw.githubusercontent.com/vanallenlab/comut/master/examples/images/melanoma_comut.png)
 
 
 ## Installation
