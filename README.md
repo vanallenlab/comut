@@ -6,7 +6,7 @@ CoMut is a Python library for creating comutation plots to visualize genomic and
 
 ## Installation
 
-CoMut can be installed via `pip`
+CoMut is available on pypi [here](https://pypi.org/project/comut/) can be installed via `pip`
 
 `pip install comut`
 
