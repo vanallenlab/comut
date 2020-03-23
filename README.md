@@ -6,13 +6,13 @@ CoMut is a Python library for creating comutation plots to visualize genomic and
 
 ## Installation
 
-CoMut is available on pypi [here](https://pypi.org/project/comut/) can be installed via `pip`
+CoMut is available on pypi [here](https://pypi.org/project/comut/) and can be installed via `pip`
 
 `pip install comut`
 
 ## Colab Quickstart
 
-For those who do not want to install Python or other packages, there is a [Google Colab notebook](https://colab.research.google.com/github/vanallenlab/comut/blob/master/examples/quickstart.ipynb) where you can simply upload a [MAF](https://software.broadinstitute.org/software/igv/MutationAnnotationFormat) file and run the notebook to make a basic comut. This file is also available as a [jupyter notebook](https://github.com/vanallenlab/comut/blob/master/examples/quickstart.ipynb) for local use. 
+For those who do not want to install Python or other packages, there is a [Google Colab notebook](https://colab.research.google.com/github/vanallenlab/comut/blob/master/examples/quickstart.ipynb) where you can simply upload a [MAF](https://software.broadinstitute.org/software/igv/MutationAnnotationFormat) file and run the notebook to make a basic comutation plot. This file is also available as a [jupyter notebook](https://github.com/vanallenlab/comut/blob/master/examples/quickstart.ipynb) for local use. 
 
 ## Citation 
 
@@ -21,7 +21,7 @@ CoMut is now available on biorxiv https://www.biorxiv.org/content/10.1101/2020.0
 
 ## Documentation
 
-There is also a [Documentation notebook](https://github.com/vanallenlab/comut/blob/master/examples/documentation.ipynb) that provides documentation for CoMut. It describes the fundamentals of creating comuts and provides the code used to generate the comut above.
+There is also a [Documentation notebook](https://github.com/vanallenlab/comut/blob/master/examples/documentation.ipynb) that provides documentation for CoMut. It describes the fundamentals of creating comutation plots and provides the code used to generate the comut above.
 
 ## Development
 
