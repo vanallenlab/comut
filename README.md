@@ -16,8 +16,8 @@ For those who do not want to install Python or other packages, there is a [Googl
 
 ## Citation 
 
-CoMut is now available on biorxiv https://www.biorxiv.org/content/10.1101/2020.03.18.997361v1. If you use CoMut in a paper, please cite:
-> Crowdis, J., He, M.X., Reardon, B., Van Allen, E.M. (2020). CoMut: Visualizing integrated molecular information with comutation plots. bioRxiv doi: 10.1101/2020.03.18.997361v1
+CoMut is now published here - https://academic.oup.com/bioinformatics/article/doi/10.1093/bioinformatics/btaa554/5851837. If you use CoMut in a paper, please cite:
+> Crowdis, J., He, M.X., Reardon, B. & Van Allen, E. M. CoMut: Visualizing integrated molecular information with comutation plots. Bioinformatics (2020). doi:10.1093/bioinformatics/btaa554
 
 ## Documentation
 
