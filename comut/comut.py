@@ -1042,7 +1042,7 @@ class CoMut:
         for i, group in enumerate(set(data['group'])):
 
             # ignore missing samples
-            if np.isnan(group):
+            if df.isna(group):
                 continue
 
             # plot the first with a label so legend can extract it later
