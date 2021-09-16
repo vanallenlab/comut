@@ -1720,6 +1720,8 @@ class CoMut:
 
                 handles, labels = axis.get_legend_handles_labels()
 
+                labels, handles = zip(*sorted(zip(labels, handles), key=lambda t: t[0]))
+
                 # create label-patch dict
                 handle_lookup = dict(zip(labels, handles))
 
