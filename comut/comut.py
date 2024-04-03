@@ -1776,3 +1776,51 @@ class CoMut:
                             draw_area.set_visible(False)
 
         return leg
+
+    def waterfall(self, data):
+        '''Sort genes and samples for waterfall plot.
+
+        Params:
+        -------
+        data: pandas dataframe
+            A tidy dataframe containing data. Required columns are
+            sample, category, and value. Other columns are ignored.
+
+            Example:
+            -------
+            sample   | category | value
+            ----------------------------
+            Sample_1 | TP53     | Missense
+            Sample_1 | Gender   | Male
+
+        Returns:
+        --------
+        sorder: list of samples ordered by genes.
+        gorder: list of genes in ascending order.
+
+        '''
+        # Reshape data: wide format with samples as rows and genes as columns, counting occurrences
+        wide_data = data.pivot_table(index='sample', columns='category', aggfunc=len, fill_value=0)
+    
+        # Convert to boolean values (1's and 0's) based on presence of mutation
+        values = wide_data.astype(bool).astype(int)
+    
+        # Order columns by decreasing frequency of mutations
+        gorder = values.sum().sort_values(ascending=False).index
+        wide_boolean = values[gorder]
+        
+        # Hierarchical sort: prioritize samples with mutations
+        sample_order = wide_boolean.apply(tuple, axis=1) \
+                                   .sort_values(ascending=False) \
+                                   .index
+    
+        # Include samples not in data, maintaining original order
+        if self.samples:
+            not_in = set(self.samples) - set(sample_order)
+            sample_order = sample_order.append(pd.Index(not_in))
+
+        sorder = sample_order.values.tolist()
+        gorder = gorder.to_frame()['category'].values.tolist()
+        gorder.reverse()
+        
+        return sorder, gorder
