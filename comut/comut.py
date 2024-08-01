@@ -1000,8 +1000,9 @@ class CoMut:
 
         # add missing categories and assign them a value of 0 for all rows
         missing_categories = paired_cats - side_cats
+	# print(paired_cats, side_cats, missing_categories)
         data_indexed = data_indexed.reindex(list(paired_plot['data'].index))
-        data.loc[missing_categories, :] = 0
+        data.loc[list(missing_categories), :] = 0
 
         # make default mapping
         if mapping is None:
